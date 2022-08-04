@@ -62,15 +62,15 @@ export const Ofertas = () => {
       })
   }
 
-  const obtenerMayorMonto = (idOferta) => {
+  const obtenerMayorMonto = (idSubastax) => {
     let montox = 0;
     ofertasHelp.forEach((ofertax) => {
-      if (ofertax.idSubasta == idOferta && ofertax.montoOferta >= montox) {
+      if (ofertax.idSubasta == idSubastax && ofertax.montoOferta >= montox) {
         montox = ofertax.montoOferta;
       }
     })
     const mejorOferta = ofertasHelp.filter(ofertax => 
-      ofertax.idSubasta == idOferta && ofertax.montoOferta == montox
+      ofertax.idSubasta == idSubastax && ofertax.montoOferta == montox
     )
     return mejorOferta
   }
