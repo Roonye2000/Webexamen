@@ -2,11 +2,11 @@ import { useState, useEffect } from 'react'
 import axios from 'axios';
 
 export const Ofertas = () => {
-  // Urls
   const baseURLOfertas = 'http://localhost:8080/api/oferta'
   const baseURLSubastas = 'http://localhost:8080/api/subasta'
 
   const [ofertas, setOfertas] = useState([]);
+  const [subastas, setSubastas] = useState([]);
 
   // Datos de la oferta
   const [subastaId, setSubastaId] = useState('');
@@ -16,14 +16,31 @@ export const Ofertas = () => {
 
   // Leer los datos
   useEffect(() => {
-    // Consultar las ofertas
+    // Leer los datos de la subasta
     axios
-      .get(baseURLOfertas)
+      .get(baseURLSubastas)
       .then((response) => {
-        const datos = response.data.ofertas;
-        setOfertas(datos);
+        const datos = response.data.subastas;
+        setSubastas(datos);
       })
+    // Leer los datos de la oferta
+    axios
+    .get(baseURLOfertas)
+    .then((response) => {
+      const datos = response.data.ofertas;
+      setOfertas(datos);
+    })
   }, [])
+
+  const crearSubasta = () => {
+    axios
+      .post(baseURLSubastas)
+      .then((response) => {
+        const nuevaSubasta = response.data;
+        console.log(nuevaSubasta);
+        setSubastas([...subastas, nuevaSubasta]);
+      })
+  }
 
   const crearOferta = () => {
     axios
@@ -43,6 +60,8 @@ export const Ofertas = () => {
   return (
     <div className="app">
       <section>
+        <h2>Subastas</h2>
+        <input type="button" value="Crear Subasta" onClick={crearSubasta}></input>
         <h2>Ofertas</h2>
         <form>
           <input
@@ -73,6 +92,24 @@ export const Ofertas = () => {
         <table>
           <thead>
             <tr>
+              <td>Id Subasta</td>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              subastas.map((subastax, index) => {
+                return (
+                  <tr key={index}>
+                    <td>{subastax._id}</td>
+                  </tr>
+                )
+              })
+            }
+          </tbody>
+        </table>
+        <table>
+          <thead>
+            <tr>
               <td>Id Oferta</td>
               <td>Id Subasta</td>
               <td>Monto</td>
@@ -81,36 +118,19 @@ export const Ofertas = () => {
             </tr>
           </thead>
           <tbody>
-            {/*
-              peticiones.map((peticionx, index) => {
+            {
+              ofertas.map((ofertax, index) => {
                 return (
                   <tr key={index}>
-                    <td>{peticionx.id}</td>
-                    <td>{peticionx.fecha}</td>
-                    <td>{peticionx.idUsuario}</td>
-                    <td>{peticionx.asignatura}</td>
-                    <td>{peticionx.nota}</td>
-                    <td>{peticionx.estado}</td>
-                    <td>
-                      <input
-                        type="button"
-                        value="Editar"
-                        id="btn_editar"
-                        itemID={peticionx.id}
-                        onClick={({target}) => leerDatosPeticion(target.attributes.itemid.value)}>
-                      </input>
-                      <input
-                        type="button"
-                        value="Eliminar"
-                        id="btn_eliminar"
-                        itemID={peticionx.id}
-                        onClick={({target}) => eliminarPeticion(target.attributes.itemid.value)}>
-                      </input>
-                    </td>
+                    <td>{ofertax._id}</td>
+                    <td>{ofertax.idSubasta}</td>
+                    <td>{ofertax.montoOferta}</td>
+                    <td>{ofertax.fecha}</td>
+                    <td>{ofertax.idOfertante}</td>
                   </tr>
                 )  
               })
-            */}
+            }
           </tbody>
         </table>
       </section>
