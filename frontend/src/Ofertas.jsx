@@ -10,7 +10,6 @@ export const Ofertas = () => {
   
   // Para obtener la mejor oferta
   const [ofertasHelp, setOfertasHelp] = useState([]);
-  const [ofertasTemp, setOfertasTemp] = useState([]);
   
   // Datos de la oferta
   const [subastaId, setSubastaId] = useState('');
@@ -77,7 +76,7 @@ export const Ofertas = () => {
   }
 
   const borrarFiltros = () => {
-    setOfertasHelp(ofertasTemp)
+    setOfertasHelp(ofertas)
   }
   return (
     <div className="app">
