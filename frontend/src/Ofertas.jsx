@@ -6,6 +6,7 @@ export const Ofertas = () => {
   const baseURLSubastas = 'http://localhost:8080/api/subasta'
 
   const [ofertas, setOfertas] = useState([]);
+  const [ofertasHelp, setOfertasHelp] = useState([]);
   const [subastas, setSubastas] = useState([]);
 
   // Datos de la oferta
@@ -29,6 +30,9 @@ export const Ofertas = () => {
     .then((response) => {
       const datos = response.data.ofertas;
       setOfertas(datos);
+      // Obtener el mónto mayor de las ofertas
+      const mejorOferta = obtenerMayorMonto(datos)
+      setOfertasHelp(mejorOferta);
     })
   }, [])
 
@@ -55,6 +59,17 @@ export const Ofertas = () => {
         console.log(nuevaOferta);
         setOfertas([...ofertas, nuevaOferta]);
       })
+  }
+
+  const obtenerMayorMonto = (datosOferta) => {
+    let montox = 0;
+    datosOferta.forEach((datoOfertax) => {
+      if (datoOfertax.montoOferta >= montox) {
+        montox = datoOfertax.montoOferta;
+      }
+    })
+    const mejorOferta = datosOferta.filter(datoOfertax => datoOfertax.montoOferta == montox)
+    return mejorOferta
   }
 
   return (
@@ -127,6 +142,28 @@ export const Ofertas = () => {
                     <td>{ofertax.montoOferta}</td>
                     <td>{ofertax.fecha}</td>
                     <td>{ofertax.idOfertante}</td>
+                  </tr>
+                )  
+              })
+            }
+          </tbody>
+        </table>
+        {/* Literal 5 */}
+        <h2>Oferta de mayor Monto:</h2>
+        <table>
+          <thead>
+            <tr>
+              <td>Id Oferta</td>
+              <td>Monto</td>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              ofertasHelp.map((ofertax, index) => {
+                return (
+                  <tr key={index}>
+                    <td>{ofertax._id}</td>
+                    <td>{ofertax.montoOferta}</td>
                   </tr>
                 )  
               })
