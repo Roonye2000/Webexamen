@@ -6,9 +6,12 @@ export const Ofertas = () => {
   const baseURLSubastas = 'http://localhost:8080/api/subasta'
 
   const [ofertas, setOfertas] = useState([]);
-  const [ofertasHelp, setOfertasHelp] = useState([]);
   const [subastas, setSubastas] = useState([]);
-
+  
+  // Para obtener la mejor oferta
+  const [ofertasHelp, setOfertasHelp] = useState([]);
+  const [ofertasTemp, setOfertasTemp] = useState([]);
+  
   // Datos de la oferta
   const [subastaId, setSubastaId] = useState('');
   const [monto, setMonto] = useState('');
@@ -26,13 +29,12 @@ export const Ofertas = () => {
       })
     // Leer los datos de la oferta
     axios
-    .get(baseURLOfertas)
-    .then((response) => {
-      const datos = response.data.ofertas;
-      setOfertas(datos);
-      // Obtener el mónto mayor de las ofertas
-      const mejorOferta = obtenerMayorMonto(datos)
-      setOfertasHelp(mejorOferta);
+      .get(baseURLOfertas)
+      .then((response) => {
+        const datos = response.data.ofertas;
+        setOfertas(datos);
+        setOfertasHelp(datos);
+        setOfertasTemp(datos);
     })
   }, [])
 
@@ -61,17 +63,22 @@ export const Ofertas = () => {
       })
   }
 
-  const obtenerMayorMonto = (datosOferta) => {
+  const obtenerMayorMonto = (idOferta) => {
     let montox = 0;
-    datosOferta.forEach((datoOfertax) => {
-      if (datoOfertax.montoOferta >= montox) {
-        montox = datoOfertax.montoOferta;
+    ofertasHelp.forEach((ofertax) => {
+      if (ofertax.idSubasta == idOferta && ofertax.montoOferta >= montox) {
+        montox = ofertax.montoOferta;
       }
     })
-    const mejorOferta = datosOferta.filter(datoOfertax => datoOfertax.montoOferta == montox)
+    const mejorOferta = ofertasHelp.filter(ofertax => 
+      ofertax.idSubasta == idOferta && ofertax.montoOferta == montox
+    )
     return mejorOferta
   }
 
+  const borrarFiltros = () => {
+    setOfertasHelp(ofertasTemp)
+  }
   return (
     <div className="app">
       <section>
@@ -108,6 +115,7 @@ export const Ofertas = () => {
           <thead>
             <tr>
               <td>Id Subasta</td>
+              <td>Opciones</td>
             </tr>
           </thead>
           <tbody>
@@ -116,6 +124,16 @@ export const Ofertas = () => {
                 return (
                   <tr key={index}>
                     <td>{subastax._id}</td>
+                    <td>
+                      <button
+                        itemID={subastax._id}
+                        onClick={({target}) => {
+                          borrarFiltros()
+                          const mejorOferta = obtenerMayorMonto(target.attributes.itemid.value)
+                          setOfertasHelp(mejorOferta)
+                        }}>
+                        Obtener reporte</button>
+                    </td>
                   </tr>
                 )
               })
