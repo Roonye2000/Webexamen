@@ -1,0 +1,49 @@
+/* ----- Estilos del formulario -----*/
+.app,
+form {
+  display: flex;
+}
+
+form {
+  flex-direction: column;
+  width: 300px;
+  margin: 20px 0;
+}
+
+input,
+select {
+  height: 30px;
+  padding: 0 15px;
+  margin: 3px 0;
+  font-size: 15px;
+}
+
+/* ----- Estilos de la tabla -----*/
+section {
+  margin: 0 20px;
+}
+
+table {
+  width: 700px;
+  text-align: center;
+}
+
+thead {
+  font-weight: bold;
+  background-color: gainsboro;
+}
+
+td {
+  padding: 7px 0;
+}
+
+/* Botones editar y eliminar */
+td > input {
+  margin: 0 5px;
+}
+
+h2 {
+  margin: 0;
+  margin-top: 15px;
+  margin-bottom: 10px;
+}
