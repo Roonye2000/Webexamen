@@ -33,7 +33,6 @@ export const Ofertas = () => {
         const datos = response.data.ofertas;
         setOfertas(datos);
         setOfertasHelp(datos);
-        setOfertasTemp(datos);
     })
   }, [])
 
@@ -76,6 +75,7 @@ export const Ofertas = () => {
   }
 
   const borrarFiltros = () => {
+    console.log(ofertas);
     setOfertasHelp(ofertas)
   }
   return (
