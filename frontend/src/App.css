@@ -6,12 +6,13 @@ form {
 
 form {
   flex-direction: column;
+  margin-bottom: 20px;
   width: 300px;
-  margin: 20px 0;
 }
 
 input,
-select {
+select,
+button {
   height: 30px;
   padding: 0 15px;
   margin: 3px 0;
@@ -26,6 +27,13 @@ section {
 table {
   width: 700px;
   text-align: center;
+  border-spacing: 0;
+  border-collapse: collapse;
+  border: 1px solid #ddd;
+}
+
+tr:nth-child(even) {
+  background-color: #f2f2f2;
 }
 
 thead {
@@ -33,13 +41,25 @@ thead {
   background-color: gainsboro;
 }
 
-td {
+thead > tr > td {
   padding: 7px 0;
+}
+
+td {
+  padding: 5px 0;
 }
 
 /* Botones editar y eliminar */
 td > input {
-  margin: 0 5px;
+  width: 48%;
+}
+
+#btn_editar {
+  margin-right: 2.5px;
+}
+
+#btn_eliminar {
+  margin-left: 2.5px;
 }
 
 h2 {

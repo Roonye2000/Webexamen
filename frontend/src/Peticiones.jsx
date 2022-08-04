@@ -1,4 +1,4 @@
-import react, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import axios from 'axios';
 
 export const Peticiones = () => {
@@ -43,6 +43,14 @@ export const Peticiones = () => {
         const nuevaPeticicon = response.data;
         console.log(nuevaPeticicon);
         setPeticiones([...peticiones, nuevaPeticicon]);
+      })
+      .catch(({response}) => {
+        const errores = response.data.errors;
+        let msgAlerta = '';
+        errores.map((err) => {
+          msgAlerta += `${err.msg}\n`
+        })
+        alert(msgAlerta);
       })
   }
 
@@ -114,10 +122,9 @@ export const Peticiones = () => {
       resultado = peticiones.filter(peticionx => peticionx.estado == estadoFiltro);
     } else {
       resultado = peticiones.filter(peticionx =>
-        peticionx.id == id && peticionx.estado == estadoFiltro
+        peticionx.id == idFiltro.toString() && peticionx.estado == estadoFiltro
       );
     }
-    console.log(resultado)
     setPeticiones(resultado)
   }
 
@@ -128,6 +135,7 @@ export const Peticiones = () => {
   return (
     <div className="app">
       <section>
+        <h2>Peticiones</h2>
         <form>
           <input
             type="text"
@@ -194,7 +202,7 @@ export const Peticiones = () => {
         </form>
       </section>
       <section>
-        <h2>Peticiones</h2>
+        <h2>Datos</h2>
         <button onClick={borrarFiltros}>Borrar filtros</button>
         <table>
           <thead>
@@ -223,12 +231,14 @@ export const Peticiones = () => {
                       <input
                         type="button"
                         value="Editar"
+                        id="btn_editar"
                         itemID={peticionx.id}
                         onClick={({target}) => leerDatosPeticion(target.attributes.itemid.value)}>
                       </input>
                       <input
                         type="button"
                         value="Eliminar"
+                        id="btn_eliminar"
                         itemID={peticionx.id}
                         onClick={({target}) => eliminarPeticion(target.attributes.itemid.value)}>
                       </input>
